@@ -61,23 +61,25 @@ namespace Lab03
                 Console.WriteLine($"Pais: {fallecido.Pais}");
                 Console.WriteLine($"Ciudad: {fallecido.Ciudad}");
                 comando.Parameters.Clear();
-                //comando.CommandText = "SP_GetResumen";
-                //comando.Parameters.AddWithValue("@Ciudad", resumen.Ciudad);
-                //comando.Parameters.AddWithValue("@Pais", resumen.Pais);
-                //reader = comando.ExecuteReader();//Ejecuto el reader asociado al procedure SP_GetClientes
-                //if (reader.Read())
-                //{
-                //    String variable = (reader["CantidadMujeres"].ToString());
-                //    resumen.CantidadMujeres = int.Parse(variable);
-                //    variable = (reader["CantidadHombres"].ToString());
-                //    resumen.CantidadHombres = int.Parse(variable);
-                //    Console.WriteLine($"Cantidad Hombres: {resumen.CantidadHombres}");
-                //    Console.WriteLine($"Cantidad Mujeres: {resumen.CantidadMujeres}");
-                //    Console.WriteLine($"Fecha de ingreso: {reader["FechaIngreso"].ToString()}");
-                //}
-             
+                comando.CommandText = "SP_GetResumen";
+                comando.Parameters.AddWithValue("@Ciudad", resumen.Ciudad);
+                comando.Parameters.AddWithValue("@Pais", resumen.Pais);
+                reader = comando.ExecuteReader();//Ejecuto el reader asociado al procedure SP_GetClientes
+                if (reader.Read())
+                {
+                    String variable = (reader["CantidadMujeres"].ToString());
+                    resumen.CantidadMujeres = int.Parse(variable);
+                    variable = (reader["CantidadHombres"].ToString());
+                    resumen.CantidadHombres = int.Parse(variable);
+                    Console.WriteLine($"Cantidad Hombres: {resumen.CantidadHombres}");
+                    Console.WriteLine($"Cantidad Mujeres: {resumen.CantidadMujeres}");
+                    Console.WriteLine($"Fecha de ingreso: {reader["FechaIngreso"].ToString()}");
+                }
+                reader.Close();
+
                 try
                 {
+                    
                     transaction = conexion.BeginTransaction();
                     comando.Transaction = transaction;
                     //Insertar FALLECIDO
