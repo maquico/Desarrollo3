@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Lab03
 {
@@ -16,108 +18,89 @@ namespace Lab03
                 //SQL (conexion, comando, reader y transaccion)
                 SqlConnection conexion = new SqlConnection(ConfigurationManager.ConnectionStrings["cn"].ConnectionString);
                 conexion.Open();
-                SqlCommand comando = new SqlCommand($"SP_GetCliente", conexion);
+                SqlCommand comando = new SqlCommand($"SP_InsertarFallecido", conexion);
                 comando.CommandType = System.Data.CommandType.StoredProcedure;
                 SqlDataReader reader = null;
                 SqlTransaction transaction = null;
                 Console.WriteLine($"--- ESTADO CONEXION: {conexion.State} ---\n\n");
 
                 //INSTANCIAS DE CLASES
-                Cliente cliente = new Cliente();
-                Transaccion transaccion = new Transaccion();
+                Fallecido fallecido = new Fallecido();
+                Resumen resumen = new Resumen();
 
                 //PIDO DATOS INICIALES DEL CLIENTE PARA VALIDAR SI EXISTE
-                Console.WriteLine($"--- DATOS CLIENTE ---\n\n");
-                Console.WriteLine("Tipo de documento: ");
-                cliente.TipoDocumento = int.Parse(Console.ReadLine());
-                Console.WriteLine("Documento:");
-                cliente.Documento = Console.ReadLine();
-                comando.Parameters.AddWithValue("@TipoDocumento", cliente.TipoDocumento);
-                comando.Parameters.AddWithValue("@Documento", cliente.Documento);
+                Console.WriteLine($"\n\n--- DATOS FALLECIDO ---\n\n");
+                Console.WriteLine("Tipo Documento: ");
+                fallecido.TipoDocumento = int.Parse(Console.ReadLine());
+                Console.WriteLine("Documento: ");
+                fallecido.Documento = Console.ReadLine();
+                Console.WriteLine("Nombre: ");
+                fallecido.Nombres = Console.ReadLine();
+                Console.WriteLine("Apellidos: ");
+                fallecido.Apellidos = Console.ReadLine();
+                Console.WriteLine("Sexo: ");
+                fallecido.Sexo = Console.ReadLine();
+                Console.WriteLine("Fecha nacimiento: ");
+                string fechaNac = Console.ReadLine();
+                fallecido.FechaNacimiento = DateTime.Parse(fechaNac);
+                fallecido.Estado = 0;
+                Console.WriteLine("Pais: ");
+                fallecido.Pais = Console.ReadLine();
+                Console.WriteLine("Ciudad: ");
+                fallecido.Ciudad = Console.ReadLine();
+                
 
-                reader = comando.ExecuteReader(); //Ejecuto el reader asociado al procedure SP_GetClientes
-
-                if (reader.Read())
-                {
-                    cliente.Nombres = reader["Nombres"].ToString();
-                    Console.WriteLine($"Nombres: {cliente.Nombres}");
-
-                    cliente.Apellidos = reader["Apellidos"].ToString();
-                    Console.WriteLine($"Apellidos: {cliente.Apellidos}");
-
-                    cliente.FechaNacimiento = (DateTime)reader["FechaNacimiento"];
-                    Console.WriteLine($"Fecha de nacimiento del cliente: {cliente.FechaNacimiento.ToShortDateString()}");
-
-                    cliente.Estado = (int)reader["Estado"];
-                    Console.WriteLine($"Estado del cliente: {cliente.Estado}");
-
-                    cliente.Comentario = reader["Comentario"].ToString();
-                    Console.WriteLine($"Comentario del cliente: {cliente.Comentario}");
-
-                    cliente.Sexo = reader["Sexo"].ToString();
-                    Console.WriteLine($"Sexo del cliente: {cliente.Sexo}");
-
-                    cliente.Balance = (decimal)reader["Balance"];
-                    Console.WriteLine($"Balance del cliente: {cliente.Balance}");
-                }
-                else
-                {
-                    Console.WriteLine("Nombre:");
-                    cliente.Nombres = Console.ReadLine();
-                    Console.WriteLine("Apellidos:");
-                    cliente.Apellidos = Console.ReadLine();
-                    Console.WriteLine("Sexo:");
-                    cliente.Sexo = Console.ReadLine();
-                    Console.WriteLine("Fecha nacimiento:");
-                    string fechaNac = Console.ReadLine();
-                    cliente.FechaNacimiento = DateTime.Parse(fechaNac);
-                    cliente.Estado = 0;
-                    Console.WriteLine("Comentario: ");
-                    cliente.Comentario = Console.ReadLine();
-                    Console.WriteLine("Balance: ");
-                    cliente.Balance = decimal.Parse(Console.ReadLine());
-                }
-
-                reader.Close();
+               
+               
 
                 //DATOS DEL MOVIMIENTO O TRANSACCION
-                Console.WriteLine($"\n\n--- DATOS MOVIMIENTO ---\n\n");
-                Console.WriteLine("Monto: ");
-                transaccion.monto = decimal.Parse(Console.ReadLine());
-                Console.WriteLine("Debito o Credito (db o cr): ");
-                transaccion.debitoCredito = Console.ReadLine();
-                Console.WriteLine("Tipo de transaccion: ");
-                transaccion.tipoTransaccion = int.Parse(Console.ReadLine());
+                Console.WriteLine($"\n\n--- DATOS RESUMEN ---\n\n");
+                resumen.Pais = fallecido.Pais;
+                resumen.Ciudad = fallecido.Ciudad;
 
-                transaction = conexion.BeginTransaction();
-                comando.Transaction = transaction;
-
+                Console.WriteLine($"Pais: {fallecido.Pais}");
+                Console.WriteLine($"Ciudad: {fallecido.Ciudad}");
+                comando.Parameters.Clear();
+                //comando.CommandText = "SP_GetResumen";
+                //comando.Parameters.AddWithValue("@Ciudad", resumen.Ciudad);
+                //comando.Parameters.AddWithValue("@Pais", resumen.Pais);
+                //reader = comando.ExecuteReader();//Ejecuto el reader asociado al procedure SP_GetClientes
+                //if (reader.Read())
+                //{
+                //    String variable = (reader["CantidadMujeres"].ToString());
+                //    resumen.CantidadMujeres = int.Parse(variable);
+                //    variable = (reader["CantidadHombres"].ToString());
+                //    resumen.CantidadHombres = int.Parse(variable);
+                //    Console.WriteLine($"Cantidad Hombres: {resumen.CantidadHombres}");
+                //    Console.WriteLine($"Cantidad Mujeres: {resumen.CantidadMujeres}");
+                //    Console.WriteLine($"Fecha de ingreso: {reader["FechaIngreso"].ToString()}");
+                //}
+             
                 try
                 {
-                    //Insertar cliente
+                    transaction = conexion.BeginTransaction();
+                    comando.Transaction = transaction;
+                    //Insertar FALLECIDO
                     comando.Parameters.Clear();
-                    comando.CommandText = "SP_UpsertCliente";
-                    comando.Parameters.AddWithValue("@Comentario", cliente.Comentario);
-                    comando.Parameters.AddWithValue("@Nombres", cliente.Nombres);
-                    comando.Parameters.AddWithValue("@Apellidos", cliente.Apellidos);
-                    comando.Parameters.AddWithValue("@TipoDocumento", cliente.TipoDocumento);
-                    comando.Parameters.AddWithValue("@Documento", cliente.Documento);
-                    comando.Parameters.AddWithValue("@FechaNacimiento", cliente.FechaNacimiento);
-                    comando.Parameters.AddWithValue("@Sexo", cliente.Sexo);
-                    comando.Parameters.AddWithValue("@Balance", cliente.Balance);
-                    comando.Parameters.AddWithValue("@TipoTransaccion", transaccion.tipoTransaccion);
-                    comando.Parameters.AddWithValue("@Monto", transaccion.monto);
+                    comando.CommandText = "SP_InsertarFallecido";
+                    comando.Parameters.AddWithValue("@Nombres", fallecido.Nombres);
+                    comando.Parameters.AddWithValue("@Apellidos", fallecido.Apellidos);
+                    comando.Parameters.AddWithValue("@TipoDocumento", fallecido.TipoDocumento);
+                    comando.Parameters.AddWithValue("@Documento", fallecido.Documento);
+                    comando.Parameters.AddWithValue("@FechaNacimiento", fallecido.FechaNacimiento);
+                    comando.Parameters.AddWithValue("@Sexo", fallecido.Sexo);
+                    comando.Parameters.AddWithValue("@Estado", fallecido.Estado);
+                    comando.Parameters.AddWithValue("@Pais", fallecido.Pais);
+                    comando.Parameters.AddWithValue("@Ciudad", fallecido.Ciudad);
                     comando.ExecuteNonQuery();
 
-                    //TRANSACCION
+                    //RESUMEN
                     comando.Parameters.Clear();
-                    comando.CommandText = "SP_InsertarTransaccion";
-                    comando.Parameters.AddWithValue("@TipoDocumento", cliente.TipoDocumento);
-                    comando.Parameters.AddWithValue("@Documento", cliente.Documento);
-                    comando.Parameters.AddWithValue("@Monto", transaccion.monto);
-                    comando.Parameters.AddWithValue("@Descripcion", cliente.Comentario);
-                    comando.Parameters.AddWithValue("@TipoTransaccion", transaccion.tipoTransaccion);
-                    comando.Parameters.AddWithValue("@DebitoCredito", transaccion.debitoCredito);
+                    comando.CommandText = "SP_UpsertResumen";
+                    comando.Parameters.AddWithValue("@Pais", resumen.Pais);
+                    comando.Parameters.AddWithValue("@Ciudad", resumen.Ciudad);
+                    comando.Parameters.AddWithValue("@Sexo", fallecido.Sexo);
+
                     comando.ExecuteNonQuery();
                     //throw new Exception("BOOM!");
                     transaction.Commit();
