@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MyDATAModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblClientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombres" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Apellidos" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="datetime" Nullable="false" />
+          <Property Name="Sexo" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="FechaIngreso" Type="datetime" Nullable="false" />
+          <Property Name="Estado" Type="int" Nullable="false" />
+          <Property Name="Comentario" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="TipoDocumento" Type="int" Nullable="false" />
+          <Property Name="Documento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Balance" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTransaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tipoDocumento" Type="int" Nullable="false" />
+          <Property Name="documento" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="monto" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="debitoCredito" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="tipoTransaccion" Type="int" Nullable="false" />
+          <Property Name="fechaTransaccion" Type="datetime" Nullable="false" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="oficina" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <Function Name="SP_GetCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="Documento" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_InsertarCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombres" Type="nvarchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="nvarchar" Mode="In" />
+          <Parameter Name="FechaNacimiento" Type="datetime" Mode="In" />
+          <Parameter Name="Comentario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Sexo" Type="nvarchar" Mode="In" />
+          <Parameter Name="TipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="Documento" Type="nvarchar" Mode="In" />
+          <Parameter Name="Balance" Type="decimal" Mode="In" />
+        </Function>
+        <Function Name="SP_InsertarTransaccion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Descripcion" Type="nvarchar" Mode="In" />
+          <Parameter Name="TipoTransaccion" Type="int" Mode="In" />
+          <Parameter Name="TipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="Documento" Type="nvarchar" Mode="In" />
+          <Parameter Name="Monto" Type="decimal" Mode="In" />
+          <Parameter Name="DebitoCredito" Type="nvarchar" Mode="In" />
+          <Parameter Name="Oficina" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="SP_UpsertCliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Nombres" Type="nvarchar" Mode="In" />
+          <Parameter Name="Apellidos" Type="nvarchar" Mode="In" />
+          <Parameter Name="FechaNacimiento" Type="datetime" Mode="In" />
+          <Parameter Name="Comentario" Type="nvarchar" Mode="In" />
+          <Parameter Name="Sexo" Type="nvarchar" Mode="In" />
+          <Parameter Name="TipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="Documento" Type="nvarchar" Mode="In" />
+          <Parameter Name="Balance" Type="decimal" Mode="In" />
+          <Parameter Name="TipoTransaccion" Type="int" Mode="In" />
+          <Parameter Name="Monto" Type="decimal" Mode="In" />
+        </Function>
+        <EntityContainer Name="MyDATAModelStoreContainer">
+          <EntitySet Name="tblClientes" EntityType="Self.tblClientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTransaccion" EntityType="Self.tblTransaccion" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MyDATAModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblClientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Apellidos" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" />
+          <Property Name="Sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+          <Property Name="Estado" Type="Int32" Nullable="false" />
+          <Property Name="Comentario" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TipoDocumento" Type="Int32" Nullable="false" />
+          <Property Name="Documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Balance" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTransaccion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tipoDocumento" Type="Int32" Nullable="false" />
+          <Property Name="documento" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="monto" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <Property Name="debitoCredito" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tipoTransaccion" Type="Int32" Nullable="false" />
+          <Property Name="fechaTransaccion" Type="DateTime" Nullable="false" />
+          <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="oficina" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="MyDATAEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblClientes" EntityType="Self.tblClientes" />
+          <EntitySet Name="tblTransaccion" EntityType="Self.tblTransaccion" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MyDATAModelStoreContainer" CdmEntityContainer="MyDATAEntities">
+          <EntitySetMapping Name="tblClientes">
+            <EntityTypeMapping TypeName="MyDATAModel.tblClientes">
+              <MappingFragment StoreEntitySet="tblClientes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTransaccion">
+            <EntityTypeMapping TypeName="MyDATAModel.tblTransaccion">
+              <MappingFragment StoreEntitySet="tblTransaccion">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="tipoDocumento" ColumnName="tipoDocumento" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="monto" ColumnName="monto" />
+                <ScalarProperty Name="debitoCredito" ColumnName="debitoCredito" />
+                <ScalarProperty Name="tipoTransaccion" ColumnName="tipoTransaccion" />
+                <ScalarProperty Name="fechaTransaccion" ColumnName="fechaTransaccion" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="oficina" ColumnName="oficina" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

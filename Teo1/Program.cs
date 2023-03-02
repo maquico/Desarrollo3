@@ -90,6 +90,7 @@ namespace Teo1
                 transaccion.debitoCredito = Console.ReadLine();
                 Console.WriteLine("Tipo de transaccion: ");
                 transaccion.tipoTransaccion = int.Parse(Console.ReadLine());
+                
 
                 transaction = conexion.BeginTransaction();
                 comando.Transaction = transaction;
@@ -120,11 +121,13 @@ namespace Teo1
                     comando.Parameters.AddWithValue("@Descripcion", cliente.Comentario);
                     comando.Parameters.AddWithValue("@TipoTransaccion", transaccion.tipoTransaccion);
                     comando.Parameters.AddWithValue("@DebitoCredito", transaccion.debitoCredito);
+                    comando.Parameters.AddWithValue("@Oficina", ConfigurationManager.AppSettings["Oficina"]);
                     comando.ExecuteNonQuery();
                     //throw new Exception("BOOM!");
                     transaction.Commit();
                 }
                 catch (Exception)
+
                 {
                     transaction.Rollback();
                     throw;

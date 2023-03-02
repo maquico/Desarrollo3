@@ -65,7 +65,7 @@
     <Compile Include="Transaccion.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="MyDATA.mdf">
