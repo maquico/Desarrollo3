@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 // La información general de un ensamblado se controla mediante el siguiente 
 // conjunto de atributos. Cambie estos valores de atributo para modificar la información
 // asociada a un ensamblado.
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
 [assembly: AssemblyTitle("Teo3")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]

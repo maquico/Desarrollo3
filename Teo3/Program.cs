@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using log4net;
+using log4net.Config;
 
 namespace Teo3
 {
@@ -23,6 +25,8 @@ namespace Teo3
             EventLog logEvt = new EventLog();
             logEvt.Source = "Application";
             logEvt.WriteEntry("Saludo desde app", EventLogEntryType.Information);
+
+
         }
     }
 }

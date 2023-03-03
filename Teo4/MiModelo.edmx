@@ -86,9 +86,9 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Nombres" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Apellidos" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" />
+          <Property Name="FechaNacimiento" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Sexo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" />
+          <Property Name="FechaIngreso" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Estado" Type="Int32" Nullable="false" />
           <Property Name="Comentario" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="TipoDocumento" Type="Int32" Nullable="false" />
@@ -105,20 +105,68 @@
           <Property Name="monto" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
           <Property Name="debitoCredito" Type="String" MaxLength="2" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="tipoTransaccion" Type="Int32" Nullable="false" />
-          <Property Name="fechaTransaccion" Type="DateTime" Nullable="false" />
+          <Property Name="fechaTransaccion" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="descripcion" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="oficina" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityContainer Name="MyDATAEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="MyDATAEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="tblClientes" EntityType="Self.tblClientes" />
           <EntitySet Name="tblTransaccion" EntityType="Self.tblTransaccion" />
+          <FunctionImport Name="SP_GetCliente" ReturnType="Collection(MyDATAModel.SP_GetCliente_Result)">
+            <Parameter Name="TipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertarCliente">
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Comentario" Mode="In" Type="String" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="TipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+            <Parameter Name="Balance" Mode="In" Type="Decimal" />
+          </FunctionImport>
+          <FunctionImport Name="SP_InsertarTransaccion">
+            <Parameter Name="Descripcion" Mode="In" Type="String" />
+            <Parameter Name="TipoTransaccion" Mode="In" Type="Int32" />
+            <Parameter Name="TipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+            <Parameter Name="DebitoCredito" Mode="In" Type="String" />
+            <Parameter Name="Oficina" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_UpsertCliente">
+            <Parameter Name="Nombres" Mode="In" Type="String" />
+            <Parameter Name="Apellidos" Mode="In" Type="String" />
+            <Parameter Name="FechaNacimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="Comentario" Mode="In" Type="String" />
+            <Parameter Name="Sexo" Mode="In" Type="String" />
+            <Parameter Name="TipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="Documento" Mode="In" Type="String" />
+            <Parameter Name="Balance" Mode="In" Type="Decimal" />
+            <Parameter Name="TipoTransaccion" Mode="In" Type="Int32" />
+            <Parameter Name="Monto" Mode="In" Type="Decimal" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="SP_GetCliente_Result">
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="String" Name="Nombres" Nullable="false" MaxLength="150" />
+          <Property Type="String" Name="Apellidos" Nullable="false" MaxLength="150" />
+          <Property Type="DateTime" Name="FechaNacimiento" Nullable="false" Precision="23" />
+          <Property Type="String" Name="Sexo" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="FechaIngreso" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="Estado" Nullable="false" />
+          <Property Type="String" Name="Comentario" Nullable="false" MaxLength="150" />
+          <Property Type="Int32" Name="TipoDocumento" Nullable="false" />
+          <Property Type="String" Name="Documento" Nullable="false" MaxLength="50" />
+          <Property Type="Decimal" Name="Balance" Nullable="false" Precision="18" Scale="2" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="MyDATAModelStoreContainer" CdmEntityContainer="MyDATAEntities">
+        <EntityContainerMapping StorageEntityContainer="MyDATAModelStoreContainer" CdmEntityContainer="MyDATAEntities1">
           <EntitySetMapping Name="tblClientes">
             <EntityTypeMapping TypeName="MyDATAModel.tblClientes">
               <MappingFragment StoreEntitySet="tblClientes">
@@ -151,6 +199,26 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetCliente" FunctionName="MyDATAModel.Store.SP_GetCliente">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MyDATAModel.SP_GetCliente_Result">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nombres" ColumnName="Nombres" />
+                <ScalarProperty Name="Apellidos" ColumnName="Apellidos" />
+                <ScalarProperty Name="FechaNacimiento" ColumnName="FechaNacimiento" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="FechaIngreso" ColumnName="FechaIngreso" />
+                <ScalarProperty Name="Estado" ColumnName="Estado" />
+                <ScalarProperty Name="Comentario" ColumnName="Comentario" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="Documento" ColumnName="Documento" />
+                <ScalarProperty Name="Balance" ColumnName="Balance" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_InsertarCliente" FunctionName="MyDATAModel.Store.SP_InsertarCliente" />
+          <FunctionImportMapping FunctionImportName="SP_InsertarTransaccion" FunctionName="MyDATAModel.Store.SP_InsertarTransaccion" />
+          <FunctionImportMapping FunctionImportName="SP_UpsertCliente" FunctionName="MyDATAModel.Store.SP_UpsertCliente" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -168,6 +236,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

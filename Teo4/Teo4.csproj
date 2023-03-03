@@ -48,7 +48,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -60,25 +67,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyModel.Designer.cs">
+    <Compile Include="MiModelo.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MyModel.edmx</DependentUpon>
+      <DependentUpon>MiModelo.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MiModelo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MiModelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MiModelo.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MiModelo.edmx</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SP_GetCliente_Result.cs">
+      <DependentUpon>MiModelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblClientes.cs">
+      <DependentUpon>MiModelo.tt</DependentUpon>
+    </Compile>
+    <Compile Include="tblTransaccion.cs">
+      <DependentUpon>MiModelo.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="MyModel.edmx">
+    <EntityDeploy Include="MiModelo.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MyModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>MiModelo.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="MyModel.edmx.diagram">
-      <DependentUpon>MyModel.edmx</DependentUpon>
+    <None Include="MiModelo.edmx.diagram">
+      <DependentUpon>MiModelo.edmx</DependentUpon>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MiModelo.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MiModelo.Context.cs</LastGenOutput>
+      <DependentUpon>MiModelo.edmx</DependentUpon>
+    </Content>
+    <Content Include="MiModelo.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MiModelo.edmx</DependentUpon>
+      <LastGenOutput>MiModelo.cs</LastGenOutput>
+    </Content>
     <Content Include="MyDATA.mdf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -98,6 +135,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

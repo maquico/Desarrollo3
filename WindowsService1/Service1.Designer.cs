@@ -35,6 +35,7 @@
             // fsw_prueba
             // 
             this.fsw_prueba.EnableRaisingEvents = true;
+            this.fsw_prueba.Path = "C:\\Monitor";
             this.fsw_prueba.Changed += new System.IO.FileSystemEventHandler(this.fsw_prueba_Changed);
             this.fsw_prueba.Created += new System.IO.FileSystemEventHandler(this.fsw_prueba_Created);
             this.fsw_prueba.Deleted += new System.IO.FileSystemEventHandler(this.fsw_prueba_Deleted);

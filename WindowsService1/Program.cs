@@ -9,6 +9,7 @@ namespace WindowsService1
 {
     internal static class Program
     {
+        
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
@@ -20,6 +21,7 @@ namespace WindowsService1
                 new Service1()
             };
             ServiceBase.Run(ServicesToRun);
+          
         }
     }
 }

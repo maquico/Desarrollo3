@@ -10,18 +10,27 @@ namespace Teo4
     {
         static void Main(string[] args)
         {
-            MyDATAEntities entities = new MyDATAEntities();
-            entities.tblCliente.Add(new tblCliente())
-                {
-                Nombres =
-            }
-
+            MyDATAEntities1 entities = new MyDATAEntities1();
+            entities.tblClientes.Add(new tblClientes()
+            {
+                Nombres = "Jose",
+                Apellidos = "Perez",
+                TipoDocumento = 1,
+                Documento = "200",
+                Balance = 0,
+                Comentario = "NA",
+                Estado = 0,
+                FechaIngreso = DateTime.Now,
+                FechaNacimiento = DateTime.Now.AddYears(-15),
+                Id = 0,
+                Sexo = "M"
+            });
             entities.SaveChanges();
 
-            entities.tblClientes.ToList().ForEach(entities =>
-            {
-                //ConsoleWriteLine
-            }
+            //entities.tblClientes.ToList().ForEach(entities =>
+            //{
+            //    //ConsoleWriteLine
+            //}
         }
     }
 }

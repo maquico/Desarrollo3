@@ -39,7 +39,10 @@
             // 
             // serviceInstaller1
             // 
-            this.serviceInstaller1.ServiceName = "Service1";
+            this.serviceInstaller1.Description = "Installer Prueba";
+            this.serviceInstaller1.DisplayName = "ServicePrueba";
+            this.serviceInstaller1.ServiceName = "ServicioTeo5";
+            this.serviceInstaller1.AfterInstall += new System.Configuration.Install.InstallEventHandler(this.serviceInstaller1_AfterInstall);
             // 
             // ProjectInstaller
             // 
