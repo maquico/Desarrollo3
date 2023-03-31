@@ -30,7 +30,25 @@ namespace Teo7
                 Name = "DS_Clientes"
             });
             this.reportViewer1.RefreshReport();
+
            
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            //this.reportViewer1.LocalReport.DataSources.Clear();
+            //this.tblClientesTableAdapter.FillByCedula(this.dS_Clientes.tblClientes);
+            //tblClientesTableAdapter clienteAdapter = new tblClientesTableAdapter();
+            //var registro = clienteAdapter.SP_GetCliente(int.Parse(txtTipoDoc.Text), txtDocumento.Text);
+            //reportViewer1.LocalReport.DataSources.Add(new Microsoft.Reporting.WinForms.ReportDataSource()
+            //{
+            //    Value = registro,
+            //    Name = "DS_Clientes"
+            //});
+            //this.reportViewer1.RefreshReport();
+            //txtDocumento.Text = "";
+            //txtTipoDoc.Text = "";
+            
         }
     }
 }
